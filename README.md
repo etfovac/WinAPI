@@ -6,10 +6,9 @@ A simple wrap - ```FindWindow```:
 ```cs
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern IntPtr FindWindow(string strClassName, string strWindowName);
+        
         public IntPtr FindWindow(string WindowName)
-        {
-            return FindWindow(null, WindowName);
-        }
+        { return FindWindow(null, WindowName); }
 ```
 A more demanding wrap - ```GetWindowSize```:
 ```cs
@@ -17,30 +16,24 @@ A more demanding wrap - ```GetWindowSize```:
         static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
         
         [StructLayout(LayoutKind.Sequential)]
-        public struct RECT
-        {
+        public struct RECT {
             public int Left;
             public int Top;
             public int Right;
             public int Bottom;
         }
-        public RECT GetWindowRectangle(string WindowName)
-        {
+        public RECT GetWindowRectangle(string WindowName) {
             RECT pRect;
             GetWindowRect(FindWindow(null, WindowName), out pRect);
-
             return pRect;
         }
-        public Size GetWindowSize(string WindowName)
-        {
+        public Size GetWindowSize(string WindowName) {
             RECT pRect;
             Size cSize = new Size();
             // get coordinates relative to window
             GetWindowRect(FindWindow(null, WindowName), out pRect);
-
             cSize.Width = pRect.Right - pRect.Left;
             cSize.Height = pRect.Bottom - pRect.Top;
-
             return cSize;
         }
 ```
@@ -49,45 +42,37 @@ Derived functions that use ```private const``` values:
 ```cs       
         [DllImport("user32.dll")]
         private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+        
         public bool RestoreWindow(string WindowName)
-        {
-            return ShowWindow(FindWindow(null, WindowName), SW_RESTORE);
-        }
+        { return ShowWindow(FindWindow(null, WindowName), SW_RESTORE); }
+        
         public bool ShowWindow(string WindowName)
-        {
-            return ShowWindow(FindWindow(null, WindowName), SW_SHOW);
-        }
+        { return ShowWindow(FindWindow(null, WindowName), SW_SHOW); }
+        
         public bool MaximizeWindow(string WindowName)
-        {
-            return ShowWindow(FindWindow(null, WindowName), SW_SHOWMAXIMIZED);
-        }
+        { return ShowWindow(FindWindow(null, WindowName), SW_SHOWMAXIMIZED); }
+        
         public bool MinimizeWindow(string WindowName)
-        {
-            return ShowWindow(FindWindow(null, WindowName), SW_MINIMIZE);
-        }
+        { return ShowWindow(FindWindow(null, WindowName), SW_MINIMIZE); }
 ```
 ### Move Window  
 Move window by name (```string WindowName```):
 ```cs
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+[DllImport("user32.dll", SetLastError = true)]
+private static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
 
-        public bool MoveWindowByName(string WindowName, int X, int Y, int Width, int Height)
-        {
-            return MoveWindow(FindWindow(null, WindowName), X, Y, Width, Height, true);
-        }
+public bool MoveWindowByName(string WindowName, int X, int Y, int Width, int Height)
+{  return MoveWindow(FindWindow(null, WindowName), X, Y, Width, Height, true);  }
 ```
 
 ### Taskbar  
 Show/hide taskbar (```AppBarStates``` is a subset of a more verbose ```AppBarMessages``` enum):
 ```cs
-        public enum AppBarStates
-        {
+        public enum AppBarStates {
             AutoHide = 0x01,
             AlwaysOnTop = 0x02
         }
-        public void SetTaskbarState(AppBarStates option)
-        {
+        public void SetTaskbarState(AppBarStates option) {
             APPBARDATA msgData = new APPBARDATA();
             msgData.cbSize = (UInt32)Marshal.SizeOf(msgData);
             msgData.hWnd = FindWindow("System_TrayWnd", null);
