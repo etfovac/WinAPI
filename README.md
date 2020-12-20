@@ -1,4 +1,6 @@
-# WinAPI [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/etfovac/WinAPI/blob/master/LICENSE)  
+# WinAPI [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/etfovac/WinAPI/blob/master/LICENSE)  [![DOI](https://zenodo.org/badge/286336544.svg)](https://zenodo.org/badge/latestdoi/286336544)  
+
+
  Selected Win API Function Calls for Window, Taskbar, Screens, etc manipulation, conveniently organized and wrapped in a C# DLL  
  
 ### Find Window 
